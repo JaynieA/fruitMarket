@@ -8,7 +8,7 @@ img {
     margin-right: auto
 }
 
-.buyFruit{
+.buyFruit, .sellFruit {
   border: none;
   height: 70px;
   width: 70px;
