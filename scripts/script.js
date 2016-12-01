@@ -122,8 +122,36 @@ $(document).ready(function() {
         }) + '</p>');
         displayUserStock();
     }); // end .purchaseFruit on click
+    $(document).on('click', '.sellFruit', sellFruit);
 }); // end doc ready
 
+function sellFruit() {
+  /* Removes the clicked fruit from the user's basket and refunds them for the
+  current market price of the matching type */
+  var fruitType = $(this).attr('id');
+  // Find the matching fruit in the user's basket and remove it
+  for (var i = 0; i < userStock.length; i++) {
+    if(userStock[i].type === fruitType) {
+      // Remove the matching fruit from the user's basket
+      userStock.splice(i, 1);
+      // Stop once the first match is found
+      break;
+    }
+  }
+  // Find the matching fruit type in the store and get the current price
+  var currentPrice = 0;
+  for (var j = 0; j < fruitStock.length; j++) {
+    if (fruitStock[j].type === fruitType) {
+      currentPrice = fruitStock[j].price;
+    }
+  }
+  userWallet += currentPrice;
+  $('#userWalletDiv').html('<p>' + userWallet.toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD'
+  }) + '</p>');
+  displayUserStock();
+}
 
 var updateModal = function(modalType) {
     console.log(modalType);
