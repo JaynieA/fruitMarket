@@ -12,6 +12,7 @@ img {
   border: none;
   height: 70px;
   width: 70px;
+  padding-top: 65px;
 }
 
 #apple {
@@ -19,7 +20,7 @@ img {
 }
 
 #orange {
-  background: url(../images/orange.jpg) center no-repeat;
+  background: url(../images/orange.png) center no-repeat;
 }
 #banana {
   background: url(../images/banana.png) center no-repeat;
@@ -27,15 +28,19 @@ img {
 #grape {
   background: url(../images/grape.jpeg) center no-repeat;
 }
+
 .modal-header {
   color: #fff;
 }
+
 .red {
   background-color: #d9534f;
 }
+
 .yellow {
   background-color: #ec971f;
 }
+
 .green {
   background-color: green
 }

@@ -137,9 +137,7 @@ var updateModal = function(modalType) {
       $('#purchaseModal').modal('show');
       break;
     case 'green':
-      modalHeader.addClass('green');
-      modalHeaderText = '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Fruit Purchased';
-      modalBodyPText = 'You successfully purchased this fruit.';
+      modalBodyPText = '';
       break;
     default: modalHeaderText = '';
   }
