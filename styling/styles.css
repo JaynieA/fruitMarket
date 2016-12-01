@@ -1,0 +1,41 @@
+body {
+    background: lightseagreen;
+}
+
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+
+.buyFruit{
+  border: none;
+  height: 70px;
+  width: 70px;
+}
+
+#apple {
+  background: url(../images/apple.png) center no-repeat;
+}
+
+#orange {
+  background: url(../images/orange.jpg) center no-repeat;
+}
+#banana {
+  background: url(../images/banana.png) center no-repeat;
+}
+#grape {
+  background: url(../images/grape.jpeg) center no-repeat;
+}
+.modal-header {
+  color: #fff;
+}
+.red {
+  background-color: #d9534f;
+}
+.yellow {
+  background-color: #ec971f;
+}
+.green {
+  background-color: green
+}
