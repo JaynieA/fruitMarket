@@ -109,12 +109,12 @@ $(document).ready(function() {
             if (fruitType === fruitToBuy) {
                 var price = fruitStock[i].price;
                 console.log('price: ', price);
+                updateWalletAndInventory(price, fruitStock[i]);
                 //push purchased fruit into the array
-                userStock.push(fruitStock[i]);
+                // userStock.push(fruitStock[i]);
                 console.log('fruit stock: ', userStock);
             } // end if
         } // end for
-        updateWallet(price);
         //display update wallet on DOM
         $('#userWalletDiv').html('<p>' + userWallet.toLocaleString('en-US', {
             style: 'currency',
@@ -126,70 +126,42 @@ $(document).ready(function() {
 
 
 var updateModal = function(modalType) {
-<<<<<<< HEAD
-  console.log(modalType);
-  var modalHeaderText;
-  var modalHeader = $('.modal-header');
-  switch (modalType) {
-    case 'red':
-      modalHeader.addClass('red');
-      modalHeaderText = '<span class="glyphicon glyphicon-warning-sign red" aria-hidden="true"></span> Not Enough Money';
-      modalBodyPText = 'You do not have enough money in your wallet to purchase this fruit.';
-      $('#purchaseModal').modal('show');
-      break;
-    case 'yellow':
-      modalHeader.addClass('yellow');
-      modalHeaderText = '<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> You are now out of money';
-      modalBodyPText = 'Your wallet is now empty.';
-      $('#purchaseModal').modal('show');
-      break;
-    case 'green':
-      modalBodyPText = '';
-      break;
-    default: modalHeaderText = '';
-  }
-  $('#purchaseModal').find('.modal-header').html(modalHeaderText);
-  $('#modalBodyP').html(modalBodyPText);
-=======
     console.log(modalType);
     var modalHeaderText;
     var modalHeader = $('.modal-header');
-    switch (modalType) {
-        case 'red':
-            modalHeader.addClass('red');
-            modalHeaderText = '<span class="glyphicon glyphicon-warning-sign red" aria-hidden="true"></span> Not Enough Money';
-            modalBodyPText = 'You do not have enough money in your wallet to purchase this fruit.';
-            $('#purchaseModal').modal('show');
-            break;
-        case 'yellow':
-            modalHeader.addClass('yellow');
-            modalHeaderText = '<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> You are now out of money';
-            modalBodyPText = 'Your wallet is now empty.';
-            $('#purchaseModal').modal('show');
-            break;
-        case 'green':
-            modalHeader.addClass('green');
-            modalHeaderText = '<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Fruit Purchased';
-            modalBodyPText = 'You successfully purchased this fruit.';
-            break;
-        default:
-            modalHeaderText = '';
+    var modalBodyPText;
+    var modalDiv = $('#purchaseModal');
+    //update modal based on modalType and show if 'red' or 'green'
+    if (modalType === 'red') {
+        modalHeader.addClass('red');
+        modalHeaderText = '<span class="glyphicon glyphicon-warning-sign red" aria-hidden="true"></span> Not Enough Money';
+        modalBodyPText = 'You do not have enough money in your wallet to purchase this fruit.';
+        modalDiv.modal('show');
+    } else if (modalType === 'yellow') {
+        modalHeader.addClass('yellow');
+        modalHeaderText = '<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> You are now out of money';
+        modalBodyPText = 'Your wallet is now empty.';
+        modalDiv.modal('show');
     }
-    $('#purchaseModal').find('.modal-header').html(modalHeaderText);
+    modalDiv.find('.modal-header').html(modalHeaderText);
     $('#modalBodyP').html(modalBodyPText);
->>>>>>> 05570e5aadc97409bb7335fd271ff72dee720767
 };
-
-var updateWallet = function(price) {
-    //subtract price of fruit from userWallet
-    userWallet -= price;
+var updateWalletAndInventory = function(price, fruitToPush) {
+    var walletAfterPurchase = userWallet - price;
+    console.log('wallet after purchase: ' + walletAfterPurchase);
     //make sure there is enough in wallet for the purchase
+    //subtract price of fruit from userWallet and push to inventory if purchase does not put amount under 0
+    if (walletAfterPurchase >= 0) {
+        console.log('change amount in wallet and push to user inventory');
+        userWallet -= price;
+        userStock.push(fruitToPush);
+    }
     modalType = '';
     //change modal response according to userWallet
-    if (userWallet < 0) {
+    if (walletAfterPurchase < 0) {
         console.log('you do not have enough money to do this');
         modalType = 'red';
-    } else if (userWallet === 0) {
+    } else if (walletAfterPurchase === 0) {
         console.log('you are now out of money');
         modalType = 'yellow';
     } else {
@@ -198,13 +170,23 @@ var updateWallet = function(price) {
     }
     //update and show modal
     updateModal(modalType);
-
     console.log('$ left in wallet: ', userWallet);
 };
 
 var displayUserStock = function() {
     console.log('in displayUserStock:', displayUserStock);
     var outputText = "The fruits you own: ";
+    userStock.sort(function(a, b) {
+        a = a.name;
+        b = b.name;
+        if (a < b) {
+            return -1;
+        } else if (a > b) {
+            return 1;
+        } else {
+            return 0; //default return value (no sorting);
+        }
+    });
     for (var i = 0; i < userStock.length; i++) {
         outputText += '<button class="sellFruit" id="' + userStock[i].type + '"></button>';
     }
