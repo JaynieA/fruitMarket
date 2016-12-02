@@ -122,7 +122,7 @@ function randomPriceChange(originalPrice, priceChange) {
 $(document).ready(function() {
     $(document).on('click', '.buyFruit', function() {
       if(!timerStarted) {
-     countdown(25);
+     countdown(300);
      timerStarted = true;
    }
         //get type of fruit to purchase
@@ -265,10 +265,16 @@ var sortArray = function(arr){
     var displayMinutes = Math.floor(seconds / 60);
     var displaySeconds = seconds % 60;
     counter.innerHTML = "Time : " + displayMinutes + ':' + displaySeconds;
-    if (seconds === 0) {
+    if (seconds <= 0) {
         alert("You're out of time!");
         console.log("Clearing the interval");
         clearInterval(timerIntervalId);
         clearInterval(priceIntervalId);
+        sellAllFruit();
 }
     }//end ticToc function
+
+
+    var sellAllFruit = function() {
+
+    }
