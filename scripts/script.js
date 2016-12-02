@@ -18,24 +18,36 @@ $(document).ready(function() {
     }, 15000);
 });
 
+var randomStart = function() {
+  var startPrice = Math.random()*10
+  console.log('Start price: ' + startPrice);
+  if (startPrice>=3.5 && startPrice<=6.99) {
+    return startPrice;
+  }
+  else {
+    return randomStart();
+  }
+}
+randomStart();
+
 var createFruits = function() {
     var apple = {
         type: "apple",
-        price: 1.49
+        price: randomStart()
     };
     var orange = {
         type: "orange",
-        price: 1.25
+        price: randomStart()
     };
     var banana = {
         type: "banana",
-        price: 1.75
+        price: randomStart()
     };
     var grape = {
         type: "grape",
-        price: 4.69
+        price: randomStart()
     };
-    fruitStock.push(apple, orange, banana, grape);
+    fruitStock.push(apple, banana, grape, orange);
 };
 
 /* --- DOM DISPLAY FUNCTIONS --- */
