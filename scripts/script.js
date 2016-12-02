@@ -162,6 +162,7 @@ var createFruits = function() {
         price: randomStart()
     };
     fruitStock.push(apple, kiwi, grape, mango);
+    sortArray(fruitStock);
 };
 
 /* --- DOM DISPLAY FUNCTIONS --- */
