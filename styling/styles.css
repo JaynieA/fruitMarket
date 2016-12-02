@@ -95,6 +95,9 @@ hr {
   background: url("../images/grape.png") center no-repeat;
 }
 /* -- MODAL -- */
+.modal {
+  top: 10%;
+}
 .modal-header {
   color: #fff;
   font-weight: bold;
