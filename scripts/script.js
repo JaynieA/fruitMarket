@@ -149,19 +149,20 @@ var createFruits = function() {
         type: "apple",
         price: randomStart()
     };
-    var orange = {
-        type: "orange",
+    var mango = {
+        type: "mango",
         price: randomStart()
     };
-    var banana = {
-        type: "banana",
+    var kiwi = {
+        type: "kiwi",
         price: randomStart()
     };
     var grape = {
         type: "grape",
         price: randomStart()
     };
-    fruitStock.push(apple, banana, grape, orange);
+    fruitStock.push(apple, kiwi, grape, mango);
+    sortArray(fruitStock);
 };
 
 /* --- DOM DISPLAY FUNCTIONS --- */
@@ -264,19 +265,19 @@ function getAverageBasketPrice() {
     /* Iterates through the user's inventory and calculates an average price of
     each fruit type */
     var applePrices = [];
-    var bananaPrices = [];
-    var orangePrices = [];
+    var kiwiPrices = [];
+    var mangoPrices = [];
     var grapePrices = [];
     userStock.forEach(function(fruit) {
         switch (fruit.type) {
             case 'apple':
                 applePrices.push(fruit.price);
                 break;
-            case 'banana':
-                bananaPrices.push(fruit.price);
+            case 'kiwi':
+                kiwiPrices.push(fruit.price);
                 break;
-            case 'orange':
-                orangePrices.push(fruit.price);
+            case 'mango':
+                mangoPrices.push(fruit.price);
                 break;
             case 'grape':
                 grapePrices.push(fruit.price);
@@ -288,27 +289,27 @@ function getAverageBasketPrice() {
     var appleSum = applePrices.reduce(function(a, b) {
         return a + b;
     }, 0);
-    var bananaSum = bananaPrices.reduce(function(a, b) {
+    var kiwiSum = kiwiPrices.reduce(function(a, b) {
         return a + b;
     }, 0);
-    var orangeSum = orangePrices.reduce(function(a, b) {
+    var mangoSum = mangoPrices.reduce(function(a, b) {
         return a + b;
     }, 0);
     var grapeSum = grapePrices.reduce(function(a, b) {
         return a + b;
     }, 0);
     var appleAvg = appleSum / applePrices.length;
-    var bananaAvg = bananaSum / bananaPrices.length;
-    var orangeAvg = orangeSum / orangePrices.length;
+    var kiwiAvg = kiwiSum / kiwiPrices.length;
+    var mangoAvg = mangoSum / mangoPrices.length;
     var grapeAvg = grapeSum / grapePrices.length;
     if (isNaN(appleAvg)) {
         appleAvg = 0;
     }
-    if (isNaN(bananaAvg)) {
-        bananaAvg = 0;
+    if (isNaN(kiwiAvg)) {
+        kiwiAvg = 0;
     }
-    if (isNaN(orangeAvg)) {
-        orangeAvg = 0;
+    if (isNaN(mangoAvg)) {
+        mangoAvg = 0;
     }
     if (isNaN(grapeAvg)) {
         grapeAvg = 0;
@@ -317,11 +318,11 @@ function getAverageBasketPrice() {
         style: 'currency',
         currency: 'USD'
     }));
-    $('#bananaAvg').html(bananaAvg.toLocaleString('en-US', {
+    $('#kiwiAvg').html(kiwiAvg.toLocaleString('en-US', {
         style: 'currency',
         currency: 'USD'
     }));
-    $('#orangeAvg').html(orangeAvg.toLocaleString('en-US', {
+    $('#mangoAvg').html(mangoAvg.toLocaleString('en-US', {
         style: 'currency',
         currency: 'USD'
     }));
