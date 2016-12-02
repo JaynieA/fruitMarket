@@ -129,8 +129,9 @@ hr {
 }
 #timer{
   text-align: center;
+  min-height: 25px;
   width: 200px;
-  margin: 20px auto 0;
+  margin: 10px auto 10px;
   border: 2px solid #439f46;
   border-radius: 4px;
 }

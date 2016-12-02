@@ -123,7 +123,7 @@ function randomPriceChange(originalPrice, priceChange) {
 $(document).ready(function() {
     $(document).on('click', '.buyFruit', function() {
       if(!timerStarted) {
-     countdown(300);
+     countdown(10);
      timerStarted = true;
    }
         //get type of fruit to purchase
@@ -335,5 +335,15 @@ function getAverageBasketPrice() {
 
 
     var sellAllFruit = function() {
+      var j = 0;
+      while (userStock.length !== 0) {
+        if (userStock[0].type  === fruitStock[j].type) {
+            userStock.splice(0,1);
+            userWallet += fruitStock[j].price;
+          }
+        else {
+          j++;
+        }
 
-    }
+        }
+      };
