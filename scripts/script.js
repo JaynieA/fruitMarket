@@ -27,7 +27,7 @@ $(document).ready(function() {
     $(document).on('click', '.buyFruit', function() {
         // Start the timer on first purchase
         if (!timerStarted) {
-            countdown(5);
+            countdown(300);
             timerStarted = true;
         }
 
@@ -333,9 +333,10 @@ function getAverageBasketPrice() {
 
 /* --- TIMER FUNCTIONS --- */
 var hideMarket = function() {
-  $('.container').hide();
-  $('#closedImg').show();
+    $('.container').hide();
+    $('#marketClosed').show();
 };
+
 function countdown(sec) {
     /* Sets the initial timer and starts the countdown */
     seconds = sec;
@@ -356,19 +357,33 @@ function ticToc() {
         clearInterval(priceIntervalId);
         $('.marketFruit').fadeOut();
         sellAllFruit();
+        displayFinalProfit();
     }
 } //end ticToc function
 
-    var sellAllFruit = function() {
 
-      var j = 0;
-      while (userStock.length !== 0) {
-        if (userStock[0].type  === fruitStock[j].type) {
-            userStock.splice(0,1);
+var displayFinalProfit = function() {
+  var profit = userWallet - 100;
+  if (profit > 0) {
+    $('#finalStat').html("YOU HAVE EARNED " + profit.toLocaleString('en-US', {style: 'currency', currency: 'USD'}));
+  } else if (profit < 0) {
+    $('#finalStat').html("YOU HAVE LOST " + Math.abs(profit).toLocaleString('en-US', {style: 'currency', currency: 'USD'}));
+  } else {
+    $('#finalStat').html("YOU BROKE EVEN!");
+  }
+};
+
+var sellAllFruit = function() {
+    console.log('Now selling ALL THE FRUIT!');
+    var j = 0;
+    while (userStock.length !== 0) {
+        if (userStock[0].type === fruitStock[j].type) {
+            console.log('now selling' + userStock[0].type);
+            userStock.splice(0, 1);
             userWallet += fruitStock[j].price;
-          }
-        else {
-          j++;
+        } else {
+            j++;
         }
-        }
-      };
+    }
+    console.log('You now have: '+ userWallet);
+};
