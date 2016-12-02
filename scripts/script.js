@@ -19,7 +19,7 @@ $(document).ready(function() {
 });
 
 var randomStart = function() {
-  var startPrice = Math.random()*10
+  var startPrice = Math.random()*10;
   console.log('Start price: ' + startPrice);
   if (startPrice>=3.5 && startPrice<=6.99) {
     return startPrice;
@@ -27,7 +27,8 @@ var randomStart = function() {
   else {
     return randomStart();
   }
-}
+};
+
 randomStart();
 
 var createFruits = function() {
@@ -121,7 +122,11 @@ $(document).ready(function() {
             if (fruitType === fruitToBuy) {
                 var price = fruitStock[i].price;
                 console.log('price: ', price);
-                updateWalletAndInventory(price, fruitStock[i]);
+                var newFruit = {
+                  type: fruitStock[i].type,
+                  price: fruitStock[i].price
+                };
+                updateWalletAndInventory(price, newFruit);
                 //push purchased fruit into the array
                 // userStock.push(fruitStock[i]);
                 console.log('fruit stock: ', userStock);
@@ -222,6 +227,8 @@ var displayUserStock = function() {
     }
     //display results of userStock to the DOM
     $('#userStock').html(outputText);
+    // Update the average prices in stock
+    getAverageBasketPrice();
 };
 
 var sortArray = function(arr){
@@ -236,4 +243,57 @@ var sortArray = function(arr){
           return 0; //default return value (no sorting);
       }
   });
+};
+
+function getAverageBasketPrice() {
+  /* Iterates through the user's inventory and calculates an average price of
+  each fruit type */
+  var applePrices = [];
+  var bananaPrices = [];
+  var orangePrices = [];
+  var grapePrices = [];
+  userStock.forEach(function(fruit) {
+    switch(fruit.type) {
+      case 'apple':
+        applePrices.push(fruit.price);
+        console.log("Price of an apple", fruit.price);
+        break;
+      case 'banana':
+        bananaPrices.push(fruit.price);
+        break;
+      case 'orange':
+        orangePrices.push(fruit.price);
+        break;
+      case 'grape':
+        grapePrices.push(fruit.price);
+        break;
+      default:
+        break;
+    }
+  });
+  console.log("ApplePrices", applePrices);
+  console.log("bananaPrices", bananaPrices);
+  console.log("orangePrices", orangePrices);
+  console.log("grapePrices", grapePrices);
+  var appleSum = applePrices.reduce(function(a, b) {
+    return a + b;
+  }, 0);
+  var bananaSum = bananaPrices.reduce(function(a, b) {
+    return a + b;
+  }, 0);
+  var orangeSum = orangePrices.reduce(function(a, b) {
+    return a + b;
+  }, 0);
+  var grapeSum = grapePrices.reduce(function(a, b) {
+    return a + b;
+  }, 0);
+  var appleAvg = appleSum / applePrices.length;
+  var bananaAvg = bananaSum / bananaPrices.length;
+  var orangeAvg = orangeSum / orangePrices.length;
+  var grapeAvg = grapeSum / grapePrices.length;
+  var htmlString = '<p>Average Apple Owned: ' + appleAvg.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
+  htmlString += '</p><p>Average Banana Owned: ' + bananaAvg.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
+  htmlString += '</p><p>Average Orange Owned: ' + orangeAvg.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
+  htmlString += '</p><p>Average Grape Owned: ' + grapeAvg.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
+  htmlString += '</p>';
 }
