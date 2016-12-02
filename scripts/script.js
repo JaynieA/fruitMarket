@@ -201,7 +201,6 @@ var updateWalletAndInventory = function(price, fruitToPush) {
     console.log('$ left in wallet: ', userWallet);
 };
 
-
 var displayUserStock = function() {
     console.log('in displayUserStock:', displayUserStock);
     var outputText = "The fruits you own: ";

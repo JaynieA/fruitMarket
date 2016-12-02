@@ -1,46 +1,113 @@
-body {
-    background: lightseagreen;
+//here's everything in the CSS file:
+/* -- GLOBAL -- */
+html, body {
+    font-family: 'Roboto', sans-serif;
 }
-
+h2 {
+  margin-top: 10px;
+}
+h3 {
+  font-size: 22px;
+  text-transform: uppercase;
+  text-align: center;
+}
 img {
     display: block;
-    margin-left: auto;
-    margin-right: auto
+    margin: 0 auto;
 }
-
+hr {
+  width: 60px;
+  height: 3px;
+  background-color: #439f46;
+  border-top: none;
+  margin-top: 10px;
+}
+/* -- LAYOUT -- */
+/* FRUIT MARKET DIV */
+.fruitMarket {
+  width: 70%;
+  height: 40vh;
+  margin: 0 auto;
+  background: url('../images/fruitMarket2.jpg') no-repeat center center ;
+  padding: 15px;
+  border: 2px solid rgba(0, 0, 0, 0.7);
+  border-radius: 4px;
+  position: relative;
+}
+#fruitStock {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  bottom: 0;
+  position: absolute;
+  padding-bottom: 10px;
+}
+/* USER STOCK DIV */
+.stockDiv {
+  padding: 0 40px 20px;
+  min-height: 150px;
+  margin: 20px auto;
+  border: 2px solid #439f46;
+}
+#userStock {
+  margin: 0 auto;
+}
+/* USER WALLET DIV */
+#userWalletDiv {
+  width: 200px;
+  margin: 20px auto 0;
+  border: 2px solid #439f46;
+  border-radius: 4px;
+}
+  #userWalletDiv > p {
+    font-size: 24px;
+    margin: 10px;
+  }
+/* -- BUTTON -- */
+.marketFruit {
+  border: 2px solid yellow;
+  width: 60%;
+  margin: 20px auto 10px auto;
+  padding-bottom: 10px;
+  border-radius: 4px;
+}
 .buyFruit, .sellFruit {
+  background-color: transparent;
+  color: #fff;
   border: none;
   height: 70px;
   width: 70px;
-  padding-top: 65px;
+  margin: 10px auto 10px;
+  outline: none;
 }
-
+  .buyFruit>p {
+    min-width: 100%;
+    margin-top: 70px;
+  }
 #apple {
-  background: url(../images/apple.png) center no-repeat;
+  background: url("../images/apple.png") center no-repeat;
 }
-
 #orange {
-  background: url(../images/orange.png) center no-repeat;
+  background: url("../images/orange.png") center no-repeat;
 }
 #banana {
-  background: url(../images/banana.png) center no-repeat;
+  background: url("../images/banana.png") center no-repeat;
 }
 #grape {
-  background: url(../images/grape.png) center no-repeat;
+  background: url("../images/grape.png") center no-repeat;
 }
-
+/* -- MODAL -- */
 .modal-header {
   color: #fff;
+  font-weight: bold;
+  font-size: 18px;
 }
-
+.modal  p {
+  text-align: center;
+  font-size: 15px;
+}
 .red {
   background-color: #d9534f;
 }
-
 .yellow {
   background-color: #ec971f;
-}
-
-.green {
-  background-color: green
 }
