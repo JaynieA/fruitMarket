@@ -30,6 +30,10 @@ hr {
   margin-top: 10px;
 }
 /* -- LAYOUT -- */
+#closedImg {
+  display: none;
+  margin-top: 15%;
+}
 /* FRUIT MARKET DIV */
 .fruitMarket {
   width: 70%;
@@ -47,9 +51,6 @@ hr {
   bottom: 0;
   position: absolute;
   padding-bottom: 10px;
-}
-#timer {
-  margin: 10px auto 10px;
 }
 /* USER STOCK DIV */
 .stockDiv {
@@ -129,8 +130,9 @@ hr {
 }
 #timer{
   text-align: center;
+  min-height: 25px;
   width: 200px;
-  margin: 20px auto 0;
+  margin: 10px auto 10px;
   border: 2px solid #439f46;
   border-radius: 4px;
 }

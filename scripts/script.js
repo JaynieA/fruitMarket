@@ -336,4 +336,8 @@ function getAverageBasketPrice() {
 
     var sellAllFruit = function() {
 
-    }
+    };
+var hideMarket = function() {
+  $('.container').hide();
+  $('#closedImg').show();
+};
