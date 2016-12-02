@@ -1,4 +1,3 @@
-//here's everything in the CSS file:
 /* -- GLOBAL -- */
 html, body {
     font-family: 'Roboto', sans-serif;
@@ -83,16 +82,16 @@ hr {
     min-width: 100%;
     margin-top: 70px;
   }
-#apple {
+.apple {
   background: url("../images/apple.png") center no-repeat;
 }
-#orange {
+.orange {
   background: url("../images/orange.png") center no-repeat;
 }
-#banana {
+.banana {
   background: url("../images/banana.png") center no-repeat;
 }
-#grape {
+.grape {
   background: url("../images/grape.png") center no-repeat;
 }
 /* -- MODAL -- */

@@ -64,12 +64,12 @@ function displayStoreFruit(fruitArray, displayId) {
     DOM */
     var htmlString = '';
     fruitArray.forEach(function(fruit) {
-        htmlString += '<button type="button" class="buyFruit"';
-        htmlString += 'name="' + fruit.type + '" id="' + fruit.type + '">';
+        htmlString += '<div class="col-sm-3"><div class="marketFruit"><button type="button" class="buyFruit ' + fruit.type + '"';
+        htmlString += 'name="' + fruit.type + '">';
         htmlString += '<p>' + fruit.price.toLocaleString('en-US', {
             style: 'currency',
             currency: 'USD'
-        }) + '</p></button>';
+        }) + '</p></button></div></div>';
     });
     // Makes sure the display ID passed in matches the required syntax
     if (displayId[0] !== '#') {
@@ -228,10 +228,10 @@ var updateWalletAndInventory = function(price, fruitToPush) {
 
 var displayUserStock = function() {
     console.log('in displayUserStock:', displayUserStock);
-    var outputText = "The fruits you own: ";
+    var outputText = '';
     sortArray(userStock);
     for (var i = 0; i < userStock.length; i++) {
-        outputText += '<button class="sellFruit" id="' + userStock[i].type + '"></button>';
+        outputText += '<button class="sellFruit ' + userStock[i].type + '"></button>';
     }
     //display results of userStock to the DOM
     $('#userStock').html(outputText);
