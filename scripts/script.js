@@ -3,6 +3,11 @@ var fruitStock = [];
 var userStock = [];
 // User starts with $100.00
 var userWallet = 100;
+//timer variables
+var seconds = 0;
+var timerStarted = false;
+var timerIntervalId;
+var priceIntervalId;
 
 /* --- MAIN LOGIC --- */
 $(document).ready(function() {
@@ -11,11 +16,13 @@ $(document).ready(function() {
     console.log(fruitStock);
     // Display the intial store fruit
     displayStoreFruit(fruitStock, '#fruitStock');
+
     // Start the counter for random price changes (every 15 seconds)
-    setInterval(function() {
+    priceIntervalId = setInterval(function() {
         changePrices();
         displayStoreFruit(fruitStock, '#fruitStock');
     }, 15000);
+
 });
 
 var randomStart = function() {
@@ -93,7 +100,9 @@ function changePrices() {
             // If either direction is safe, determine at random
             fruit.price = randomPriceChange(fruit.price, priceChange);
         }
-    });
+
+        }
+    );
 }
 
 function randomPriceChangeValue() {
@@ -113,6 +122,10 @@ function randomPriceChange(originalPrice, priceChange) {
 
 $(document).ready(function() {
     $(document).on('click', '.buyFruit', function() {
+      if(!timerStarted) {
+     countdown(25);
+     timerStarted = true;
+   }
         //get type of fruit to purchase
         var fruitToBuy = $(this).attr('name');
         // loop through fruits in fruitStock array to find matching type
@@ -291,3 +304,25 @@ function getAverageBasketPrice() {
   $('orangeAvg').html(orangeAvg.toLocaleString('en-US', {style: 'currency', currency: 'USD'}));
   $('grapeAvg').html(grapeAvg.toLocaleString('en-US', {style: 'currency', currency: 'USD'}));
 }
+
+    function countdown(sec){
+      seconds = sec;
+      timerIntervalId = setInterval(ticToc,1000);
+
+
+
+    }//end countdown function
+
+    function ticToc(){
+      var counter = document.getElementById("timer");
+    seconds--;
+    var displayMinutes = Math.floor(seconds / 60);
+    var displaySeconds = seconds % 60;
+    counter.innerHTML = "Time : " + displayMinutes + ':' + displaySeconds;
+    if (seconds === 0) {
+        alert("You're out of time!");
+        console.log("Clearing the interval");
+        clearInterval(timerIntervalId);
+        clearInterval(priceIntervalId);
+}
+    }//end ticToc function
