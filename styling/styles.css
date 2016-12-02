@@ -10,6 +10,14 @@ h3 {
   text-transform: uppercase;
   text-align: center;
 }
+h4 {
+  margin-top: 15px;
+  text-transform: uppercase;
+  font-size: 17px;
+}
+h5 {
+  font-size: 20px;
+}
 img {
     display: block;
     margin: 0 auto;
@@ -46,6 +54,9 @@ hr {
   min-height: 150px;
   margin: 20px auto;
   border: 2px solid #439f46;
+}
+.stockDiv.stats {
+  min-height: 100px;
 }
 #userStock {
   margin: 0 auto;
