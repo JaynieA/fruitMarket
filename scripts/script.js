@@ -1,15 +1,16 @@
-// --- GLOBALS ---
+/* --- GLOBALS --- */
 var fruitStock = [];
 var userStock = [];
 // User starts with $100.00
 var userWallet = 100;
-//timer variables
+// Timer variables
 var seconds = 0;
 var timerStarted = false;
 var timerIntervalId;
 var priceIntervalId;
 
 /* --- MAIN LOGIC --- */
+
 $(document).ready(function() {
     // Initialize the store's stock
     createFruits();
@@ -23,20 +24,125 @@ $(document).ready(function() {
         displayStoreFruit(fruitStock, '#fruitStock');
     }, 15000);
 
+    $(document).on('click', '.buyFruit', function() {
+        // Start the timer on first purchase
+        if (!timerStarted) {
+            countdown(5);
+            timerStarted = true;
+        }
+
+        // Get type of fruit to purchase
+        var fruitToBuy = $(this).attr('name');
+        // Loop through fruits in fruitStock array to find matching type
+        for (var i = 0; i < fruitStock.length; i++) {
+            //get current price of that type
+            fruitType = fruitStock[i].type;
+            if (fruitType === fruitToBuy) {
+                var price = fruitStock[i].price;
+                console.log('price: ', price);
+                var newFruit = {
+                    type: fruitStock[i].type,
+                    price: fruitStock[i].price
+                };
+                updateWalletAndInventory(price, newFruit);
+                //push purchased fruit into the array
+                // userStock.push(fruitStock[i]);
+                console.log('fruit stock: ', userStock);
+            } // end if
+        } // end for
+        //display update wallet on DOM
+        $('#userWalletDiv').html('<p>' + userWallet.toLocaleString('en-US', {
+            style: 'currency',
+            currency: 'USD'
+        }) + '</p>');
+        displayUserStock();
+    }); // end .purchaseFruit on click
+    $(document).on('click', '.sellFruit', sellFruit);
 });
 
-var randomStart = function() {
-  var startPrice = Math.random()*10;
-  console.log('Start price: ' + startPrice);
-  if (startPrice>=3.5 && startPrice<=6.99) {
-    return startPrice;
-  }
-  else {
-    return randomStart();
-  }
+function sellFruit() {
+    /* Removes the clicked fruit from the user's basket and refunds them for the
+    current market price of the matching type */
+    var fruitType = $(this).attr('name');
+    console.log(fruitType);
+    // Find the matching fruit in the user's basket and remove it
+    for (var i = 0; i < userStock.length; i++) {
+        if (userStock[i].type === fruitType) {
+            // Remove the matching fruit from the user's basket
+            userStock.splice(i, 1);
+            // Stop once the first match is found
+            break;
+        }
+    }
+    // Find the matching fruit type in the store and get the current price
+    var currentPrice = 0;
+    for (var j = 0; j < fruitStock.length; j++) {
+        if (fruitStock[j].type === fruitType) {
+            currentPrice = fruitStock[j].price;
+        }
+    }
+    userWallet += currentPrice;
+    $('#userWalletDiv').html('<p>' + userWallet.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD'
+    }) + '</p>');
+    displayUserStock();
+}
+
+var updateWalletAndInventory = function(price, fruitToPush) {
+    var walletAfterPurchase = userWallet - price;
+    console.log('wallet after purchase: ' + walletAfterPurchase);
+    //make sure there is enough in wallet for the purchase
+    //subtract price of fruit from userWallet and push to inventory if purchase does not put amount under 0
+    if (walletAfterPurchase >= 0) {
+        console.log('change amount in wallet and push to user inventory');
+        userWallet -= price;
+        userStock.push(fruitToPush);
+    }
+    modalType = '';
+    //change modal response according to userWallet
+    if (walletAfterPurchase < 0) {
+        console.log('you do not have enough money to do this');
+        modalType = 'red';
+    } else if (walletAfterPurchase === 0) {
+        console.log('you are now out of money');
+        modalType = 'yellow';
+    } else {
+        console.log('ok');
+        modalType = 'green';
+    }
+    //update and show modal
+    updateModal(modalType);
+    console.log('$ left in wallet: ', userWallet);
 };
 
-randomStart();
+var sortArray = function(arr) {
+    arr.sort(function(a, b) {
+        aName = a.type.toLowerCase();
+        bName = b.type.toLowerCase();
+        if (aName < bName) {
+            return -1;
+        } else if (aName > bName) {
+            return 1;
+        } else {
+            return 0; //default return value (no sorting);
+        }
+    });
+};
+
+/* --- FRUIT CREATION --- */
+
+var randomStart = function() {
+    /* Recursively determines a starting price for each fruit within the
+    bounds: $3.50 < price < $6.99 */
+    var startPrice = Math.random() * 10;
+    console.log('Start price: ' + startPrice);
+    if (startPrice >= 3.5 && startPrice <= 6.99) {
+        return startPrice;
+    } else {
+        return randomStart();
+    }
+};
 
 var createFruits = function() {
     var apple = {
@@ -80,6 +186,19 @@ function displayStoreFruit(fruitArray, displayId) {
     $(displayId).html(htmlString);
 }
 
+var displayUserStock = function() {
+    console.log('in displayUserStock:', displayUserStock);
+    var outputText = '';
+    sortArray(userStock);
+    for (var i = 0; i < userStock.length; i++) {
+        outputText += '<button class="sellFruit ' + userStock[i].type + '" name="' + userStock[i].type + '"></button>';
+    }
+    //display results of userStock to the DOM
+    $('#userStock').html(outputText);
+    // Update the average prices in stock
+    getAverageBasketPrice();
+};
+
 /* --- RANDOM PRICE CHANGING FUNCTIONS --- */
 
 function changePrices() {
@@ -101,8 +220,7 @@ function changePrices() {
             fruit.price = randomPriceChange(fruit.price, priceChange);
         }
 
-        }
-    );
+    });
 }
 
 function randomPriceChangeValue() {
@@ -119,6 +237,7 @@ function randomPriceChange(originalPrice, priceChange) {
         return originalPrice - priceChange;
     }
 }
+
 
 $(document).ready(function() {
     $(document).on('click', '.buyFruit', function() {
@@ -184,6 +303,7 @@ function sellFruit() {
   displayUserStock();
 }
 
+
 var updateModal = function(modalType) {
     console.log(modalType);
     var modalHeaderText;
@@ -205,121 +325,89 @@ var updateModal = function(modalType) {
     modalDiv.find('.modal-header').html(modalHeaderText);
     $('#modalBodyP').html(modalBodyPText);
 };
-var updateWalletAndInventory = function(price, fruitToPush) {
-    var walletAfterPurchase = userWallet - price;
-    console.log('wallet after purchase: ' + walletAfterPurchase);
-    //make sure there is enough in wallet for the purchase
-    //subtract price of fruit from userWallet and push to inventory if purchase does not put amount under 0
-    if (walletAfterPurchase >= 0) {
-        console.log('change amount in wallet and push to user inventory');
-        userWallet -= price;
-        userStock.push(fruitToPush);
-    }
-    modalType = '';
-    //change modal response according to userWallet
-    if (walletAfterPurchase < 0) {
-        console.log('you do not have enough money to do this');
-        modalType = 'red';
-    } else if (walletAfterPurchase === 0) {
-        console.log('you are now out of money');
-        modalType = 'yellow';
-    } else {
-        console.log('ok');
-        modalType = 'green';
-    }
-    //update and show modal
-    updateModal(modalType);
-    console.log('$ left in wallet: ', userWallet);
-};
-
-var displayUserStock = function() {
-    console.log('in displayUserStock:', displayUserStock);
-    var outputText = '';
-    sortArray(userStock);
-    for (var i = 0; i < userStock.length; i++) {
-        outputText += '<button class="sellFruit ' + userStock[i].type + '" name="' + userStock[i].type + '"></button>';
-    }
-    //display results of userStock to the DOM
-    $('#userStock').html(outputText);
-    // Update the average prices in stock
-    getAverageBasketPrice();
-};
-
-var sortArray = function(arr){
-  arr.sort(function(a, b) {
-      aName = a.type.toLowerCase();
-      bName = b.type.toLowerCase();
-      if (aName < bName) {
-          return -1;
-      } else if (aName > bName) {
-          return 1;
-      } else {
-          return 0; //default return value (no sorting);
-      }
-  });
-};
 
 function getAverageBasketPrice() {
-  /* Iterates through the user's inventory and calculates an average price of
-  each fruit type */
-  var applePrices = [];
-  var bananaPrices = [];
-  var orangePrices = [];
-  var grapePrices = [];
-  userStock.forEach(function(fruit) {
-    switch(fruit.type) {
-      case 'apple':
-        applePrices.push(fruit.price);
-        break;
-      case 'banana':
-        bananaPrices.push(fruit.price);
-        break;
-      case 'orange':
-        orangePrices.push(fruit.price);
-        break;
-      case 'grape':
-        grapePrices.push(fruit.price);
-        break;
-      default:
-        break;
+    /* Iterates through the user's inventory and calculates an average price of
+    each fruit type */
+    var applePrices = [];
+    var bananaPrices = [];
+    var orangePrices = [];
+    var grapePrices = [];
+    userStock.forEach(function(fruit) {
+        switch (fruit.type) {
+            case 'apple':
+                applePrices.push(fruit.price);
+                break;
+            case 'banana':
+                bananaPrices.push(fruit.price);
+                break;
+            case 'orange':
+                orangePrices.push(fruit.price);
+                break;
+            case 'grape':
+                grapePrices.push(fruit.price);
+                break;
+            default:
+                break;
+        }
+    });
+    var appleSum = applePrices.reduce(function(a, b) {
+        return a + b;
+    }, 0);
+    var bananaSum = bananaPrices.reduce(function(a, b) {
+        return a + b;
+    }, 0);
+    var orangeSum = orangePrices.reduce(function(a, b) {
+        return a + b;
+    }, 0);
+    var grapeSum = grapePrices.reduce(function(a, b) {
+        return a + b;
+    }, 0);
+    var appleAvg = appleSum / applePrices.length;
+    var bananaAvg = bananaSum / bananaPrices.length;
+    var orangeAvg = orangeSum / orangePrices.length;
+    var grapeAvg = grapeSum / grapePrices.length;
+    if (isNaN(appleAvg)) {
+        appleAvg = 0;
     }
-  });
-  var appleSum = applePrices.reduce(function(a, b) {
-    return a + b;
-  }, 0);
-  var bananaSum = bananaPrices.reduce(function(a, b) {
-    return a + b;
-  }, 0);
-  var orangeSum = orangePrices.reduce(function(a, b) {
-    return a + b;
-  }, 0);
-  var grapeSum = grapePrices.reduce(function(a, b) {
-    return a + b;
-  }, 0);
-  var appleAvg = appleSum / applePrices.length;
-  var bananaAvg = bananaSum / bananaPrices.length;
-  var orangeAvg = orangeSum / orangePrices.length;
-  var grapeAvg = grapeSum / grapePrices.length;
-  if (isNaN(appleAvg)) {appleAvg = 0;}
-  if (isNaN(bananaAvg)) {bananaAvg = 0;}
-  if (isNaN(orangeAvg)) {orangeAvg = 0;}
-  if (isNaN(grapeAvg)) {grapeAvg = 0;}
-  $('#appleAvg').html(appleAvg.toLocaleString('en-US', {style: 'currency', currency: 'USD'}));
-  $('#bananaAvg').html(bananaAvg.toLocaleString('en-US', {style: 'currency', currency: 'USD'}));
-  $('#orangeAvg').html(orangeAvg.toLocaleString('en-US', {style: 'currency', currency: 'USD'}));
-  $('#grapeAvg').html(grapeAvg.toLocaleString('en-US', {style: 'currency', currency: 'USD'}));
+    if (isNaN(bananaAvg)) {
+        bananaAvg = 0;
+    }
+    if (isNaN(orangeAvg)) {
+        orangeAvg = 0;
+    }
+    if (isNaN(grapeAvg)) {
+        grapeAvg = 0;
+    }
+    $('#appleAvg').html(appleAvg.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD'
+    }));
+    $('#bananaAvg').html(bananaAvg.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD'
+    }));
+    $('#orangeAvg').html(orangeAvg.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD'
+    }));
+    $('#grapeAvg').html(grapeAvg.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD'
+    }));
 }
 
-    function countdown(sec){
-      seconds = sec;
-      timerIntervalId = setInterval(ticToc,1000);
+/* --- TIMER FUNCTIONS --- */
 
+function countdown(sec) {
+    /* Sets the initial timer and starts the countdown */
+    seconds = sec;
+    timerIntervalId = setInterval(ticToc, 1000);
+} //end countdown function
 
-
-    }//end countdown function
-
-    function ticToc(){
-      var counter = document.getElementById("timer");
+function ticToc() {
+    /* Runs and updates the timer. Once it reaches 0, halts functionality */
+    var counter = document.getElementById("timer");
     seconds--;
     var displayMinutes = Math.floor(seconds / 60);
     var displaySeconds = seconds % 60;
@@ -329,10 +417,10 @@ function getAverageBasketPrice() {
         console.log("Clearing the interval");
         clearInterval(timerIntervalId);
         clearInterval(priceIntervalId);
+        $('.marketFruit').fadeOut();
         sellAllFruit();
-}
-    }//end ticToc function
-
+    }
+} //end ticToc function
 
     var sellAllFruit = function() {
       var j = 0;
