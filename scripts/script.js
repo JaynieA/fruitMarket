@@ -256,7 +256,6 @@ function getAverageBasketPrice() {
     switch(fruit.type) {
       case 'apple':
         applePrices.push(fruit.price);
-        console.log("Price of an apple", fruit.price);
         break;
       case 'banana':
         bananaPrices.push(fruit.price);
@@ -271,10 +270,6 @@ function getAverageBasketPrice() {
         break;
     }
   });
-  console.log("ApplePrices", applePrices);
-  console.log("bananaPrices", bananaPrices);
-  console.log("orangePrices", orangePrices);
-  console.log("grapePrices", grapePrices);
   var appleSum = applePrices.reduce(function(a, b) {
     return a + b;
   }, 0);
@@ -291,9 +286,8 @@ function getAverageBasketPrice() {
   var bananaAvg = bananaSum / bananaPrices.length;
   var orangeAvg = orangeSum / orangePrices.length;
   var grapeAvg = grapeSum / grapePrices.length;
-  var htmlString = '<p>Average Apple Owned: ' + appleAvg.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
-  htmlString += '</p><p>Average Banana Owned: ' + bananaAvg.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
-  htmlString += '</p><p>Average Orange Owned: ' + orangeAvg.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
-  htmlString += '</p><p>Average Grape Owned: ' + grapeAvg.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
-  htmlString += '</p>';
+  $('appleAvg').html(appleAvg.toLocaleString('en-US', {style: 'currency', currency: 'USD'}));
+  $('bananaAvg').html(bananaAvg.toLocaleString('en-US', {style: 'currency', currency: 'USD'}));
+  $('orangeAvg').html(orangeAvg.toLocaleString('en-US', {style: 'currency', currency: 'USD'}));
+  $('grapeAvg').html(grapeAvg.toLocaleString('en-US', {style: 'currency', currency: 'USD'}));
 }
