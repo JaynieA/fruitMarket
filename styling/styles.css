@@ -30,6 +30,10 @@ hr {
   margin-top: 10px;
 }
 /* -- LAYOUT -- */
+#closedImg {
+  display: none;
+  margin-top: 15%;
+}
 /* FRUIT MARKET DIV */
 .fruitMarket {
   width: 70%;

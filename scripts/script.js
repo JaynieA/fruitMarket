@@ -238,72 +238,6 @@ function randomPriceChange(originalPrice, priceChange) {
     }
 }
 
-
-$(document).ready(function() {
-    $(document).on('click', '.buyFruit', function() {
-      if(!timerStarted) {
-     countdown(10);
-     timerStarted = true;
-   }
-        //get type of fruit to purchase
-        var fruitToBuy = $(this).attr('name');
-        // loop through fruits in fruitStock array to find matching type
-        for (var i = 0; i < fruitStock.length; i++) {
-            //get current price of that type
-            fruitType = fruitStock[i].type;
-            if (fruitType === fruitToBuy) {
-                var price = fruitStock[i].price;
-                console.log('price: ', price);
-                var newFruit = {
-                  type: fruitStock[i].type,
-                  price: fruitStock[i].price
-                };
-                updateWalletAndInventory(price, newFruit);
-                //push purchased fruit into the array
-                // userStock.push(fruitStock[i]);
-                console.log('fruit stock: ', userStock);
-            } // end if
-        } // end for
-        //display update wallet on DOM
-        $('#userWalletDiv').html('<p>' + userWallet.toLocaleString('en-US', {
-            style: 'currency',
-            currency: 'USD'
-        }) + '</p>');
-        displayUserStock();
-    }); // end .purchaseFruit on click
-    $(document).on('click', '.sellFruit', sellFruit);
-}); // end doc ready
-
-function sellFruit() {
-  /* Removes the clicked fruit from the user's basket and refunds them for the
-  current market price of the matching type */
-  var fruitType = $(this).attr('name');
-  console.log(fruitType);
-  // Find the matching fruit in the user's basket and remove it
-  for (var i = 0; i < userStock.length; i++) {
-    if(userStock[i].type === fruitType) {
-      // Remove the matching fruit from the user's basket
-      userStock.splice(i, 1);
-      // Stop once the first match is found
-      break;
-    }
-  }
-  // Find the matching fruit type in the store and get the current price
-  var currentPrice = 0;
-  for (var j = 0; j < fruitStock.length; j++) {
-    if (fruitStock[j].type === fruitType) {
-      currentPrice = fruitStock[j].price;
-    }
-  }
-  userWallet += currentPrice;
-  $('#userWalletDiv').html('<p>' + userWallet.toLocaleString('en-US', {
-      style: 'currency',
-      currency: 'USD'
-  }) + '</p>');
-  displayUserStock();
-}
-
-
 var updateModal = function(modalType) {
     console.log(modalType);
     var modalHeaderText;
@@ -398,7 +332,10 @@ function getAverageBasketPrice() {
 }
 
 /* --- TIMER FUNCTIONS --- */
-
+var hideMarket = function() {
+  $('.container').hide();
+  $('#closedImg').show();
+};
 function countdown(sec) {
     /* Sets the initial timer and starts the countdown */
     seconds = sec;
@@ -413,7 +350,7 @@ function ticToc() {
     var displaySeconds = seconds % 60;
     counter.innerHTML = "Time : " + displayMinutes + ':' + displaySeconds;
     if (seconds <= 0) {
-        alert("You're out of time!");
+        hideMarket();
         console.log("Clearing the interval");
         clearInterval(timerIntervalId);
         clearInterval(priceIntervalId);
@@ -432,6 +369,5 @@ function ticToc() {
         else {
           j++;
         }
-
         }
       };
