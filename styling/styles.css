@@ -48,6 +48,9 @@ hr {
   position: absolute;
   padding-bottom: 10px;
 }
+#timer {
+  margin: 10px auto 10px;
+}
 /* USER STOCK DIV */
 .stockDiv {
   padding: 0 40px 20px;

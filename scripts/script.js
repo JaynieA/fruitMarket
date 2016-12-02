@@ -158,7 +158,8 @@ $(document).ready(function() {
 function sellFruit() {
   /* Removes the clicked fruit from the user's basket and refunds them for the
   current market price of the matching type */
-  var fruitType = $(this).attr('id');
+  var fruitType = $(this).attr('name');
+  console.log(fruitType);
   // Find the matching fruit in the user's basket and remove it
   for (var i = 0; i < userStock.length; i++) {
     if(userStock[i].type === fruitType) {
@@ -236,7 +237,7 @@ var displayUserStock = function() {
     var outputText = '';
     sortArray(userStock);
     for (var i = 0; i < userStock.length; i++) {
-        outputText += '<button class="sellFruit ' + userStock[i].type + '"></button>';
+        outputText += '<button class="sellFruit ' + userStock[i].type + '" name="' + userStock[i].type + '"></button>';
     }
     //display results of userStock to the DOM
     $('#userStock').html(outputText);
@@ -299,10 +300,14 @@ function getAverageBasketPrice() {
   var bananaAvg = bananaSum / bananaPrices.length;
   var orangeAvg = orangeSum / orangePrices.length;
   var grapeAvg = grapeSum / grapePrices.length;
-  $('appleAvg').html(appleAvg.toLocaleString('en-US', {style: 'currency', currency: 'USD'}));
-  $('bananaAvg').html(bananaAvg.toLocaleString('en-US', {style: 'currency', currency: 'USD'}));
-  $('orangeAvg').html(orangeAvg.toLocaleString('en-US', {style: 'currency', currency: 'USD'}));
-  $('grapeAvg').html(grapeAvg.toLocaleString('en-US', {style: 'currency', currency: 'USD'}));
+  if (isNaN(appleAvg)) {appleAvg = 0;}
+  if (isNaN(bananaAvg)) {bananaAvg = 0;}
+  if (isNaN(orangeAvg)) {orangeAvg = 0;}
+  if (isNaN(grapeAvg)) {grapeAvg = 0;}
+  $('#appleAvg').html(appleAvg.toLocaleString('en-US', {style: 'currency', currency: 'USD'}));
+  $('#bananaAvg').html(bananaAvg.toLocaleString('en-US', {style: 'currency', currency: 'USD'}));
+  $('#orangeAvg').html(orangeAvg.toLocaleString('en-US', {style: 'currency', currency: 'USD'}));
+  $('#grapeAvg').html(grapeAvg.toLocaleString('en-US', {style: 'currency', currency: 'USD'}));
 }
 
     function countdown(sec){
