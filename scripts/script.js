@@ -201,23 +201,28 @@ var updateWalletAndInventory = function(price, fruitToPush) {
     console.log('$ left in wallet: ', userWallet);
 };
 
+
 var displayUserStock = function() {
     console.log('in displayUserStock:', displayUserStock);
     var outputText = "The fruits you own: ";
-    userStock.sort(function(a, b) {
-        a = a.name;
-        b = b.name;
-        if (a < b) {
-            return -1;
-        } else if (a > b) {
-            return 1;
-        } else {
-            return 0; //default return value (no sorting);
-        }
-    });
+    sortArray(userStock);
     for (var i = 0; i < userStock.length; i++) {
         outputText += '<button class="sellFruit" id="' + userStock[i].type + '"></button>';
     }
     //display results of userStock to the DOM
     $('#userStock').html(outputText);
 };
+
+var sortArray = function(arr){
+  arr.sort(function(a, b) {
+      aName = a.type.toLowerCase();
+      bName = b.type.toLowerCase();
+      if (aName < bName) {
+          return -1;
+      } else if (aName > bName) {
+          return 1;
+      } else {
+          return 0; //default return value (no sorting);
+      }
+  });
+}
