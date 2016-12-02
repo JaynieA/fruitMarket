@@ -215,7 +215,7 @@ var updateWalletAndInventory = function(price, fruitToPush) {
 
 var displayUserStock = function() {
     console.log('in displayUserStock:', displayUserStock);
-    var outputText = "The fruits you own: ";
+    var outputText = '';
     sortArray(userStock);
     for (var i = 0; i < userStock.length; i++) {
         outputText += '<button class="sellFruit" id="' + userStock[i].type + '"></button>';
